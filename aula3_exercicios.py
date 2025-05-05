@@ -109,3 +109,90 @@ print(buscar_colaborador(2))  # Retorna os dados de Ana Souza
 
 print("\nColaboradores com salário acima de 4000:")
 print(listar_colaboradores_por_salario(4000))  # Lista apenas quem ganha mais que 4000
+
+
+# Implemente um sistema de gerenciamento de tarefas (to-do list) em memória usando dicionários e JSON.
+
+#Use um dicionário para armazenar tarefas no formato exemplificado abaixo:
+
+import json
+
+# Dicionário para armazenar tarefas
+tarefas = {
+    1: {"titulo": "Estudar Python", "status": "pendente"},
+    2: {"titulo": "Fazer relatório", "status": "concluído"}
+}
+
+# Conjunto de status válidos
+status_validos = {"pendente", "em andamento", "concluído"}
+
+def listar_tarefas():
+    """Retorna todas as tarefas em formato JSON."""
+    return json.dumps(tarefas, indent=4, ensure_ascii=False)
+
+def adicionar_tarefa():
+    """Interage com o usuário para adicionar uma tarefa."""
+    id = int(input("Digite o ID da nova tarefa: "))
+    if id in tarefas:
+        print("Erro: ID já existe.")
+        return
+
+    titulo = input("Digite o título da tarefa: ")
+    status = input(f"Digite o status da tarefa ({', '.join(status_validos)}): ")
+
+    if status not in status_validos:
+        print("Erro: Status inválido.")
+        return
+    
+    tarefas[id] = {"titulo": titulo, "status": status}
+    print("Tarefa adicionada com sucesso.")
+
+def atualizar_status():
+    """Interage com o usuário para atualizar o status de uma tarefa."""
+    id = int(input("Digite o ID da tarefa a ser atualizada: "))
+    if id not in tarefas:
+        print("Erro: ID não encontrado.")
+        return
+
+    novo_status = input(f"Digite o novo status da tarefa ({', '.join(status_validos)}): ")
+    if novo_status not in status_validos:
+        print("Erro: Status inválido.")
+        return
+    
+    tarefas[id]["status"] = novo_status
+    print("Status atualizado com sucesso.")
+
+def remover_tarefa():
+    """Interage com o usuário para remover uma tarefa pelo ID."""
+    id = int(input("Digite o ID da tarefa a ser removida: "))
+    if id not in tarefas:
+        print("Erro: ID não encontrado.")
+        return
+    
+    del tarefas[id]
+    print("Tarefa removida com sucesso.")
+
+# Menu interativo
+while True:
+    print("\nGerenciador de Tarefas")
+    print("1 - Listar tarefas")
+    print("2 - Adicionar tarefa")
+    print("3 - Atualizar status")
+    print("4 - Remover tarefa")
+    print("5 - Sair")
+    
+    opcao = input("Escolha uma opcao: ")
+
+    if opcao == "1":
+        print(listar_tarefas())
+    elif opcao == "2":
+        adicionar_tarefa()
+    elif opcao == "3":
+        atualizar_status()
+    elif opcao == "4":
+        remover_tarefa()
+    elif opcao == "5":
+        print("Encerrando...")
+        break
+    else:
+        print("Opcao inválida. Tente novamente.")
